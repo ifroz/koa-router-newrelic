@@ -1,5 +1,5 @@
 {
-  "name": "koa-newrelic",
+  "name": "koa-router-newrelic",
   "version": "1.0.0",
   "description": "",
   "main": "koa-newrelic.js",
