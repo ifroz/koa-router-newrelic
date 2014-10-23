@@ -3,9 +3,9 @@
 var _ = require('lodash');
 var newrelic = require('newrelic');
 
-module.exports = function middlewareFactory(app) {
+module.exports = function middlewareFactory(routerInstance) {
   return function *(next) {
-    var str = _(app.getRouter().match(this.url)).
+    var str = _(routerInstance.match(this.url)).
         pluck('route').pluck('path').join(' ').replace(/\/+/g,'/');
     newrelic.setTransactionName(str);
     yield next;
