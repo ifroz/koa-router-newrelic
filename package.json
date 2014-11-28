@@ -1,6 +1,6 @@
 {
   "name": "koa-router-newrelic",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "koa-newrelic.js",
   "scripts": {

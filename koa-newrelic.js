@@ -8,9 +8,14 @@ module.exports = function middlewareFactory(routerInstance, cfg) {
     ctrlFormat: true
   });
   return function *(next) {
-    var str = _(routerInstance.match(this.url.split('?')[0])).
-        pluck('route').pluck('path').join(' ').replace(/\/+/g,'/').slice(1);
-    newrelic[cfg.ctrlFormat ? 'setControllerName' : 'setTransactionName'](str);
-    yield next;
+    try {
+      yield next;
+    } catch (err) {
+      newrelic.noticeError(err);
+    } finally {
+      var str = _(routerInstance.match(this.url.split('?')[0])).
+          pluck('route').pluck('path').join(' ').replace(/\/+/g,'/').slice(1);
+      newrelic[cfg.ctrlFormat ? 'setControllerName' : 'setTransactionName'](str);
+    }
   }
 };
