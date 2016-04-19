@@ -1,10 +1,10 @@
 'use strict';
 
-var _ = require('lodash');
-var newrelic = require('newrelic');
+const _ = require('lodash');
+const newrelic = require('newrelic');
 
 module.exports = function middlewareFactory(routerInstance, cfg) {
-  var cfg = _.defaults(cfg || {}, {
+  cfg = _.defaults(cfg || {}, {
     ctrlFormat: true
   });
   return function *(next) {
@@ -13,9 +13,8 @@ module.exports = function middlewareFactory(routerInstance, cfg) {
     } catch (err) {
       newrelic.noticeError(err);
     } finally {
-      var str = _(routerInstance.match(this.url.split('?')[0])).
-          pluck('route').pluck('path').join(' ').replace(/\/+/g,'/').slice(1);
+      let str = cfg.ctrlFormat ? `${this.url.split('?')[0]}` : `${this.url.split('?')[0]}`.slice(1);
       newrelic[cfg.ctrlFormat ? 'setControllerName' : 'setTransactionName'](str);
     }
-  }
+  };
 };
